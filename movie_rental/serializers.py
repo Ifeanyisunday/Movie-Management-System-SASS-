@@ -33,8 +33,22 @@ class RentalSerializer(serializers.ModelSerializer):
             'return_date'
         ]
 
-    def validate(self, request):
-        movie = request.get('movie')
+    def validate(self, attrs):
+        movie = attrs.get('movie')
+        user = self.context['request'].user
+
+        if Rental.objects.filter(
+            user=user,
+            movie=movie,
+            status='RENTED'
+        ).exists():
+            raise serializers.ValidationError(
+                "You already rented this movie and haven't returned it."
+            )
+
+
+        if not movie:
+            raise serializers.ValidationError("Movie is required.")
 
         inventory = Inventory.objects.filter(movie=movie).first()
         if not inventory:
@@ -47,4 +61,4 @@ class RentalSerializer(serializers.ModelSerializer):
                 "Movie is currently out of stock."
             )
 
-        return request
+        return attrs

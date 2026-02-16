@@ -30,7 +30,8 @@ class RentalTests(APITestCase):
             title='Inception',
             genre='comedy',
             daily_rate=10,
-            release_year=2010
+            release_year=2010,
+            price=1000
         )
 
         # Create inventory
@@ -47,7 +48,7 @@ class RentalTests(APITestCase):
         self.assertEqual(Rental.objects.count(), 1)
 
         self.inventory.refresh_from_db()
-        self.assertEqual(self.inventory.available_copies, self.inventory.available_copies)
+        self.assertEqual(self.inventory.available_copies, 4)
 
     def test_rent_movie_out_of_stock(self):
         self.inventory.available_copies = 0
@@ -77,3 +78,13 @@ class RentalTests(APITestCase):
 
         self.inventory.refresh_from_db()
         self.assertEqual(self.inventory.available_copies, 1)
+
+
+    
+    def test_cannot_rent_twice(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.client.post("/api/rentals/", {"movie": self.movie.id})
+        response = self.client.post("/api/rentals/", {"movie": self.movie.id})
+
+        self.assertEqual(response.status_code, 400)
