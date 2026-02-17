@@ -50,9 +50,11 @@ INSTALLED_APPS = [
     'customer',
     'movie_rental',
     'django_filters',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +63,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+
+CORS_ALLOW_ALL_ORIGINS = False
+
 
 ROOT_URLCONF = 'SASS_MOVIE.urls'
 
@@ -103,13 +113,10 @@ SIMPLE_JWT = {
 
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     }
 }
+
 
 
 # Database

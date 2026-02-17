@@ -8,6 +8,7 @@ class CustomUser(AbstractUser):
         ('vendor', 'Vendor')
     )
 
+    phone = models.CharField(max_length=11, unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
 
     def __str__(self):

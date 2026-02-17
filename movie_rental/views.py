@@ -11,7 +11,8 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db import transaction
-
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
 from .models import Movie, Inventory, Rental
@@ -19,6 +20,7 @@ from customer.permissions import IsAdmin, IsCustomer
 from .serializers import MovieSerializer, RentalSerializer, InventorySerializer
 
 
+@method_decorator(cache_page(60 * 5), name="list")
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
@@ -30,8 +32,8 @@ class MovieViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            # return [IsAuthenticated(), IsAdmin()]
-            return [IsAdmin()]
+            return [IsAuthenticated(), IsAdmin()]
+            # return [IsAdmin()]
         return [IsAuthenticated()]
     
 
