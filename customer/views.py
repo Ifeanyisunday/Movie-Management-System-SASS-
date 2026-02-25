@@ -19,8 +19,26 @@ class AnyUserViewSet(viewsets.ViewSet):
     def register(self, request):
         serializer = PublicUserRegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"message": "Registered"}, status=201)
+
+        # Prevent public admin creation
+        role = serializer.validated_data.get("role")
+        if role == "admin":
+            return Response(
+                {"error": "Admin accounts cannot be created publicly."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        user = serializer.save()
+
+        return Response(
+            {
+                "message": "Registered successfully",
+                "user_id": user.id,
+                "username": user.username,
+                "role": user.role,
+            },
+            status=status.HTTP_201_CREATED
+        )
 
     @action(detail=False, methods=['post'])
     def login(self, request):
@@ -45,24 +63,22 @@ class AnyUserViewSet(viewsets.ViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = AdminManagedUserSerializer
-    permission_classes = [IsAuthenticated, IsAdmin]
 
+
+    def get_queryset(self):
+        return CustomUser.objects.exclude(role="admin").order_by("-date_joined")
 
     def get_permissions(self):
-        """
-        Set permissions based on action.
-        """
-        # Admin-only actions
-        if self.action in ["retrieve", "list", "destroy", "update", "partial_update"]:
-            return [IsAuthenticated(), IsAdmin()]
+        if self.action in ["list", "retrieve", "destroy", "update", "partial_update"]:
+            permission_classes = [IsAuthenticated, IsAdmin]
 
-        # Actions accessible by both admin and the user themselves
-        if self.action in ["me", "change_password"]:
-            return [IsAuthenticated()]
+        elif self.action in ["me", "change_password"]:
+            permission_classes = [IsAuthenticated]
 
-        # Default: must be authenticated
-        return [IsAuthenticated()]
+        else:
+            permission_classes = [IsAuthenticated]
 
+        return [permission() for permission in permission_classes]
 
     @action(detail=False, methods=['get', 'patch'])
     def me(self, request):
@@ -72,19 +88,15 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(user)
             return Response(serializer.data)
 
-        if request.method == 'PATCH':
-            serializer = self.get_serializer(
-                user,
-                data=request.data,
-                partial=True
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
+        serializer = self.get_serializer(
+            user,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
-    # -------------------------
-    # POST /api/users/me/change-password/
-    # -------------------------
     @action(detail=False, methods=['post'], url_path='me/change-password')
     def change_password(self, request):
         user = request.user
@@ -114,6 +126,8 @@ class AdminAnalyticsViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
     def stats(self, request):
+
+
         total_revenue = Rental.objects.filter(
             status='RETURNED'
         ).aggregate(
@@ -121,6 +135,7 @@ class AdminAnalyticsViewSet(viewsets.ViewSet):
         )['total'] or 0
 
         total_rentals = Rental.objects.count()
+
         active_rentals = Rental.objects.filter(
             status='RENTED'
         ).count()
@@ -131,4 +146,14 @@ class AdminAnalyticsViewSet(viewsets.ViewSet):
             .annotate(total=Count('id'))
             .order_by('-total')[:5]
         )
+
+        users = CustomUser.objects.exclude(role="admin").order_by("-date_joined").count()
+
+        return Response({
+            "total_revenue": total_revenue,
+            "total_rentals": total_rentals,
+            "active_rentals": active_rentals,
+            "top_movies": list(top_movies),
+            "total_customers": users
+        })
 

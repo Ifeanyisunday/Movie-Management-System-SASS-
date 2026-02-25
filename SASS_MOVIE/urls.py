@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from customer.views import AnyUserViewSet, UserViewSet, AdminAnalyticsViewSet
-from movie_rental.views import MovieViewSet, RentalViewSet, InventoryViewSet
+from movie_rental.views import MovieViewSet, RentalViewSet, InventoryViewSet, HealthCheckViewSet
 
 router = DefaultRouter()
 router.register('auth', AnyUserViewSet, basename='auth')
@@ -26,6 +26,7 @@ router.register('admin-analytics', AdminAnalyticsViewSet, basename='admin-analyt
 router.register('movies', MovieViewSet, basename='movies')
 router.register('inventory', InventoryViewSet, basename='inventory')
 router.register('rentals', RentalViewSet, basename='rentals')
+router.register('health', HealthCheckViewSet, basename='health')
 
 urlpatterns = [
     path('api/', include(router.urls)),

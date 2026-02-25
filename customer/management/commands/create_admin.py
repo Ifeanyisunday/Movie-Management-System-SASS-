@@ -63,7 +63,7 @@ class Command(BaseCommand):
             password=password,
             role="admin",
             is_staff=True,        # allows admin panel access
-            is_superuser=False    # change to True if needed
+            is_superuser=True   # change to True if needed
         )
 
         self.stdout.write(

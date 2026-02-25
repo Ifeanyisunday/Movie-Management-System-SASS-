@@ -9,9 +9,10 @@ djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
-django-filter = "*"
 django-redis = "*"
 django-cors-headers = "*"
+dj-database-url = "*"
+django-filter = "*"
 
 [dev-packages]
 

@@ -12,15 +12,23 @@ class PublicUserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password', "phone"] 
+        fields = ['username', 'email', 'password', "phone", "role"] 
+
+    def validate_role(self, value):
+        if value not in ["customer", "vendor"]:
+            raise serializers.ValidationError("Invalid role selection.")
+        return value
+
 
     def create(self, validated_data):
+        role = validated_data.pop("role")
+
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             phone=validated_data["phone"],
-            role='customer'  
+            role=role 
         )
         return user
 
