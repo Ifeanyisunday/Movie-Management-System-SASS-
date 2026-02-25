@@ -8,11 +8,13 @@ django = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 python-dotenv = "*"
-psycopg2-binary = "*"
 django-redis = "*"
 django-cors-headers = "*"
-dj-database-url = "*"
 django-filter = "*"
+gunicorn = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
+whitenoise = "*"
 
 [dev-packages]
 
