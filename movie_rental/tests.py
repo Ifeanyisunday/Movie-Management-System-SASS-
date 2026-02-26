@@ -11,16 +11,26 @@ from .models import Movie, Inventory, Rental
 User = get_user_model()
 
 
-class RentalTests(APITestCase):
+class AppTests(APITestCase):
 
     # Create test user
     def setUp(self):
+
+        # create customer
         self.user = User.objects.create_user(
             username='testuser',
             password='password123',
             role='customer'
         )
 
+         # create vendor
+        self.vendor = User.objects.create_user(
+            username="vendor",
+            password="testpass123",
+            role="vendor"
+        )
+
+        
         refresh = RefreshToken.for_user(self.user)
         access_token = str(refresh.access_token)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
@@ -31,7 +41,8 @@ class RentalTests(APITestCase):
             genre='comedy',
             daily_rate=10,
             release_year=2010,
-            price=1000
+            price=1000,
+            vendor=self.vendor  
         )
 
         # Create inventory
