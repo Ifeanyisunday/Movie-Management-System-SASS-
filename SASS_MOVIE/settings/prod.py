@@ -7,9 +7,6 @@ DEBUG = False
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ["*"]
-
-
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 
@@ -22,7 +19,6 @@ DATABASES = {
 }
 
 
-# Redis cache (optional but recommended)
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
@@ -30,13 +26,10 @@ CACHES = {
 }
 
 
-# Production CORS (adjust later for frontend domain)
 CORS_ALLOWED_ORIGINS = []
-
 CORS_ALLOW_ALL_ORIGINS = False
 
 
-# Production security
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SECURE_SSL_REDIRECT = True
