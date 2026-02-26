@@ -9,7 +9,8 @@ class AuthTests(APITestCase):
         response = self.client.post('/api/auth/register/', {
             'username': 'john',
             'password': 'pass1234',
-            'email': 'john@example.com',      
+            'email': 'john@example.com', 
+            "phone": "08000000003",      
             'role': 'customer'                
         })
 

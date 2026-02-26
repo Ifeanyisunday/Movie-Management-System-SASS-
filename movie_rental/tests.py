@@ -50,7 +50,8 @@ class AppTests(APITestCase):
         # Create inventory
         self.inventory = Inventory.objects.create(
             movie=self.movie,
-            available_copies=5
+            available_copies=5,
+            total_copies=5
         )
 
     def test_rent_movie_success(self):
