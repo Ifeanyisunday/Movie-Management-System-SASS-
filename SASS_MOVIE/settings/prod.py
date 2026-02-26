@@ -7,7 +7,9 @@ DEBUG = False
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", 
+                          "movie-management-system-sass.onrender.com"
+                          ).split(",")
 
 
 # Render Postgres
@@ -26,7 +28,11 @@ CACHES = {
 }
 
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", 
+    "https://your-production-frontend.com" 
+]
+
 CORS_ALLOW_ALL_ORIGINS = False
 
 
