@@ -18,7 +18,6 @@ RUN pip install -r requirements.txt
 # Copy the entire project
 COPY . /app/
 
-RUN python manage.py collectstatic --noinput
 
 # Run Gunicorn using the wsgi module in sass_movie
 CMD gunicorn SASS_MOVIE.wsgi:application --bind 0.0.0.0:8000 --workers 3
