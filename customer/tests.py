@@ -5,13 +5,21 @@ from rest_framework.test import APITestCase
 from customer.models import CustomUser
 
 class AuthTests(APITestCase):
+
     def test_customer_register(self):
-        response = self.client.post('/api/auth/register/', {
-            'username': 'john',
-            'password': 'pass1234',
-            'email': 'john@example.com', 
-            "phone": "08000000003",      
-            'role': 'customer'                
-        })
+
+        url = "/api/auth/register/"
+
+        data = {
+            "username": "testuser",
+            "email": "test@example.com",
+            "password": "StrongPass123!",
+            "phone": "08012345678",
+            "role": "customer"
+        }
+
+        response = self.client.post(url, data, format="json")
+
+        print(response.data)
 
         self.assertEqual(response.status_code, 201)

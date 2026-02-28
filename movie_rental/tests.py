@@ -19,7 +19,7 @@ class AppTests(APITestCase):
         # create customer
         self.user = User.objects.create_user(
             username='testuser',
-            password='password123',
+            password= "StrongPass123!",
             phone="08000000001",
             role='customer'
         )
@@ -27,7 +27,7 @@ class AppTests(APITestCase):
          # create vendor
         self.vendor = User.objects.create_user(
             username="vendor",
-            password="testpass123",
+            password= "StrongPass123!",
             phone="08000000002",
             role="vendor"
         )
