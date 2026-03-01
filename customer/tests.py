@@ -22,4 +22,4 @@ class AuthTests(APITestCase):
 
         print(response.data)
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201) 
