@@ -20,4 +20,5 @@ COPY . /app/
 
 
 # Run Gunicorn using the wsgi module in sass_movie
-CMD ["bash", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn SASS_MOVIE.wsgi:application"]
+# CMD ["bash", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn SASS_MOVIE.wsgi:application"]
+CMD ["bash", "start.sh"]
