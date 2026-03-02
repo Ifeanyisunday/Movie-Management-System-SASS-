@@ -23,5 +23,12 @@ ENV PORT=8000
 
 EXPOSE 8000
 
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+ENTRYPOINT ["/app/start.sh"]
+
 # Run Gunicorn using the wsgi module in sass_movie
-CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn SASS_MOVIE.wsgi:application --bind 0.0.0.0:$PORT
+# CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn SASS_MOVIE.wsgi:application --bind 0.0.0.0:$PORT
+
+CMD ["gunicorn", "SASS_MOVIE.wsgi:application", "--bind", "0.0.0.0:8000"]
