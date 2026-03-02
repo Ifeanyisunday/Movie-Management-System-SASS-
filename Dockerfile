@@ -20,4 +20,4 @@ COPY . /app/
 
 
 # Run Gunicorn using the wsgi module in sass_movie
-CMD gunicorn SASS_MOVIE.wsgi:application --bind 0.0.0.0:8000 --workers 3
+CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn SASS_MOVIE.wsgi:application --bind 0.0.0.0:8000
