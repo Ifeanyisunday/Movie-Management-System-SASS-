@@ -36,7 +36,7 @@ CACHES = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    "https://movie-management-system-silk.vercel.app/"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
