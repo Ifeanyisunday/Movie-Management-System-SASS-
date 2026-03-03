@@ -22,8 +22,6 @@ from .serializers import MovieSerializer, RentalSerializer, InventorySerializer
 
 
     
-
-# @method_decorator(cache_page(60 * 5), name="list")
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
@@ -91,6 +89,7 @@ class InventoryViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes]
+
 
 
 
@@ -170,6 +169,7 @@ class RentalViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(rentals, many=True)
         return Response(serializer.data)
+
 
 
 class HealthCheckViewSet(viewsets.ViewSet):

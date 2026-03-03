@@ -1,26 +1,3 @@
-# from django.core.management.base import BaseCommand
-# from customer.models import CustomUser
-
-# class Command(BaseCommand):
-#     help = "Create initial app admin"
-
-#     def handle(self, *args, **kwargs):
-#         username = input("Admin username: ")
-#         password = input("Admin password: ")
-
-#         if CustomUser.objects.filter(username=username).exists():
-#             self.stdout.write(self.style.ERROR("Username already exists"))
-#             return
-
-#         CustomUser.objects.create_user(
-#             username=username,
-#             password=password,
-#             role='admin'
-#         )
-
-#         self.stdout.write("Admin created successfully")
-
-
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
@@ -29,6 +6,9 @@ from getpass import getpass
 User = get_user_model()
 
 
+#this create admin command is used to create an admin user for the application. 
+# It prompts the user for a username and password, validates the input, and creates a new admin user if the input is valid. 
+# The command also checks for existing usernames to prevent duplicates and ensures that the password meets certain criteria (e.g., minimum length).
 class Command(BaseCommand):
     help = "Create an application admin user"
 
