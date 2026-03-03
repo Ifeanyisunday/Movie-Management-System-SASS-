@@ -36,7 +36,7 @@ CACHES = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://movie-management-system-silk.vercel.app/"
+    "https://movie-management-system-sass-fronte.vercel.app"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
