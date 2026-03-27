@@ -8,7 +8,7 @@ DEBUG = False
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", 
-                          "rental-system-8lrb.onrender.com"
+                          "rental-system-swef.onrender.com"
                           ).split(",")
 
 
