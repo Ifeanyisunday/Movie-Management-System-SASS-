@@ -40,6 +40,8 @@ class AnyUserViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED
         )
 
+
+
     @action(detail=False, methods=['post'])
     def login(self, request):
         user = authenticate(
@@ -59,6 +61,7 @@ class AnyUserViewSet(viewsets.ViewSet):
             "username": user.username,
         })
     
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
